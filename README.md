@@ -8,35 +8,15 @@ https://www.blackbox.ai/
 https://www.kaggle.com
 
 ## Entwicklung & Implementierung
+
+### Abgeänderter Code
+
+### Wichtigste stellen des Original-Codes
 ```
-import numpy as np
-import pandas as pd
-import os
-import matplotlib.pyplot as plt
-import tensorflow as tf
-import random
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from tensorflow.keras.layers import Dense,Flatten,Dropout,Conv2D,MaxPooling2D,BatchNormalization
-from tensorflow.keras.optimizers import Adam
-import keras
-from keras.models import Sequential
-from sklearn.metrics import classification_report, log_loss, accuracy_score
-from sklearn.model_selection import train_test_split
-from tqdm import tqdm
+import numpy as np...
+
 data_dir = '../input/b200c-lego-classification-dataset/64'
-Name=[]
-for file in os.listdir(data_dir):
-    Name+=[file]
-print(Name)
-print(len(Name))
-200
-N=[]
-for i in range(len(Name)):
-    N+=[i]
-    
-normal_mapping=dict(zip(Name,N)) 
-reverse_mapping=dict(zip(N,Name)) 
+
 datax0=[]
 datay0=[]
 count=0
@@ -50,30 +30,8 @@ for file in tqdm(Name):
         datay0.append(count)
     count=count+1
 100%|██████████| 200/200 [1:09:53<00:00, 20.97s/it]
-n=len(datax0)
-M=[]
-for i in range(n):
-    M+=[i]
-random.shuffle(M)
-datax1=np.array(datax0)
-datay1=np.array(datay0)
-trainx0=datax1[M[0:(n//4)*3]]
-testx0=datax1[M[(n//4)*3:]]
-trainy0=datay1[M[0:(n//4)*3]]
-testy0=datay1[M[(n//4)*3:]]
-trainy2=to_categorical(trainy0)
-X_train=np.array(trainx0).reshape(-1,10,10,3)
-y_train=np.array(trainy2)
-X_test=np.array(testx0).reshape(-1,10,10,3)
-trainx,testx,trainy,testy=train_test_split(X_train,y_train,test_size=0.2,random_state=44)
-print(trainx.shape)
-print(testx.shape)
-print(trainy.shape)
-print(testy.shape)
-(480000, 10, 10, 3)
-(120000, 10, 10, 3)
-(480000, 200)
-(120000, 200)
+
+
 model = Sequential()
 model.add(Conv2D(32,(4,4),input_shape = (10,10,3),activation = 'relu'))
 model.add(Conv2D(32,(2,2),activation = 'relu'))
@@ -82,8 +40,7 @@ model.add(Flatten())
 model.add(Dense(400, activation='relu'))
 model.add(Dense(200, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=['accuracy'])
-model.summary()
-Model: "sequential"
+
 
 his = model.fit(X_train, y_train, validation_split=0.2, epochs=30, batch_size=64, verbose=2)
 
